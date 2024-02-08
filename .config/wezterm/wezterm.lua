@@ -1,6 +1,19 @@
 local wezterm = require("wezterm")
 local act = wezterm.action
 
+function os.capture(cmd, raw)
+	local f = assert(io.popen(cmd, "r"))
+	local s = assert(f:read("*a"))
+	f:close()
+	if raw then
+		return s
+	end
+	s = string.gsub(s, "^%s+", "")
+	s = string.gsub(s, "%s+$", "")
+	s = string.gsub(s, "[\n\r]+", " ")
+	return s
+end
+
 local function conditional_activate_pane(window, pane, pane_direction, vim_direction)
 	window:perform_action(wezterm.action.ActivatePaneDirection(pane_direction), pane)
 end
@@ -69,6 +82,7 @@ return {
 		{ key = "8", mods = "ALT", action = act.ActivateTab(7) },
 		{ key = "9", mods = "ALT", action = act.ActivateTab(8) },
 	},
-	font = wezterm.font_with_fallback({ "FiraCode Nerd Font Mono", "Fira Code" }),
+	-- font = wezterm.font_with_fallback({ "FiraCode Nerd Font Mono", "Fira Code" }),
+	font = wezterm.font(os.capture("uname") == "Linux" and "FiraCode Nerd Font Mono" or "Fira Code"),
 	color_scheme = "Oxocarbon Dark (Gogh)",
 }
