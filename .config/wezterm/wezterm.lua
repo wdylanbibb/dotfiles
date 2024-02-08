@@ -69,6 +69,6 @@ return {
 		{ key = "8", mods = "ALT", action = act.ActivateTab(7) },
 		{ key = "9", mods = "ALT", action = act.ActivateTab(8) },
 	},
-	font = wezterm.font("FiraCode Nerd Font Mono"),
+	font = wezterm.font_with_fallback({ "FiraCode Nerd Font Mono", "Fira Code" }),
 	color_scheme = "Oxocarbon Dark (Gogh)",
 }
